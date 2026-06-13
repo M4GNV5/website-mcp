@@ -7,10 +7,16 @@ All paths are sanitized to stay inside <cwd>/files.
 from __future__ import annotations
 
 import hmac
+import mimetypes
 import os
 import re
 import shutil
 from pathlib import Path
+
+# Serve TS/JSX sources as JavaScript so browsers don't block them as
+# octet-stream. Actual TS->JS transpile happens client-side (e.g. Babel).
+for _ext in (".ts", ".tsx", ".jsx", ".mjs", ".js"):
+    mimetypes.add_type("text/javascript", _ext)
 
 import uvicorn
 from mcp.server.fastmcp import FastMCP

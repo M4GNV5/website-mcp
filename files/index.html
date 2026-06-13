@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- React (ESM) resolves the bare `react` / `react-dom/client` imports in src/ -->
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@18.3.1",
+          "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+          "react-dom": "https://esm.sh/react-dom@18.3.1",
+          "react-dom/client": "https://esm.sh/react-dom@18.3.1/client"
+        }
+      }
+    </script>
+
+    <!-- Babel transpiles the TSX/JSX in src/ directly in the browser — no build step -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.26.4/babel.min.js"></script>
+
+    <!-- Automatic JSX runtime: JSX compiles to react/jsx-runtime imports
+         (resolved by the importmap above), so no `import React` is needed. -->
+    <script>
+      Babel.registerPreset("react-auto", {
+        presets: [[Babel.availablePresets.react, { runtime: "automatic" }]],
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- Self-contained: only bare imports (react, react-dom/client) which the importmap
+         resolves. No relative imports, so nothing for the browser to mis-fetch. -->
+    <script
+      type="text/babel"
+      data-type="module"
+      data-presets="react-auto,typescript"
+      src="App.tsx"
+    ></script>
+  </body>
+</html>
